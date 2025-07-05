@@ -14,7 +14,7 @@ CreateThread(function()
         elseif GetResourceState('qb-core') == 'started' then
             Config.Framework = 'qb'
         else
-            print("[v-containers] ERROR: No supported framework found!")
+            --print("[v-containers] ERROR: No supported framework found!")
             return
         end
     end
@@ -25,7 +25,7 @@ CreateThread(function()
         elseif GetResourceState('qb-inventory') == 'started' then
             Config.Inventory = 'qb'
         else
-            print("[v-containers] WARNING: No supported inventory found, defaulting to ox")
+            --print("[v-containers] WARNING: No supported inventory found, defaulting to ox")
             Config.Inventory = 'ox'
         end
     end
@@ -33,7 +33,7 @@ CreateThread(function()
     Framework = Config.Framework
     Inventory = Config.Inventory
 
-    print(("[v-containers] Initialized with Framework: %s, Inventory: %s"):format(Framework, Inventory))
+    --print(("[v-containers] Initialized with Framework: %s, Inventory: %s"):format(Framework, Inventory))
 
     InitializeFramework()
 
@@ -45,7 +45,7 @@ CreateThread(function()
     end
 
     if not FrameworkObject then
-        print("[v-containers] ERROR: Framework object not initialized!")
+        --print("[v-containers] ERROR: Framework object not initialized!")
         return
     end
 
@@ -123,7 +123,7 @@ function createItems()
             end
         elseif Framework == 'qbx' then
         else
-            print(('[v-containers] Unsupported framework: %s — usable item "%s" not registered.'):format(Framework, containerType))
+            --print(('[v-containers] Unsupported framework: %s — usable item "%s" not registered.'):format(Framework, containerType))
         end
     end
 end
@@ -224,7 +224,7 @@ function LoadContainers()
             local coords = json.decode(row.coords)
             local containerConfig = Config.Containers[row.type]
             if not containerConfig then
-                print(("[v-containers] WARNING: Found a container in DB with invalid type '%s'. Skipping."):format(row.type))
+                --print(("[v-containers] WARNING: Found a container in DB with invalid type '%s'. Skipping."):format(row.type))
                 goto continue
             end
 
@@ -261,7 +261,7 @@ function LoadContainers()
         end
 
         containerCount = #result
-        print(("[v-containers] Loaded %d containers from the database."):format(containerCount))
+        --print(("[v-containers] Loaded %d containers from the database."):format(containerCount))
 
         CreateThread(function()
             Wait(2000)
@@ -691,7 +691,7 @@ function StartLifetimeCheck()
 
             for _, id in ipairs(expiredContainers) do
                 if containers[id] then
-                    print(("[v-containers] Container %s has expired and is being removed."):format(id))
+                    --print(("[v-containers] Container %s has expired and is being removed."):format(id))
                     DeleteContainer(id)
                     TriggerClientEvent('v-containers:client:removeContainer', -1, id)
                 end
@@ -709,7 +709,7 @@ RegisterNetEvent('v-containers:server:playerLoaded', function()
             containers[id].hasAccess = false
         end
         TriggerClientEvent('v-containers:client:syncContainers', source, containers)
-        print(("[v-containers] Synced %d containers for player %s."):format(table.maxn(containers), source))
+        ----print(("[v-containers] Synced %d containers for player %s."):format(table.maxn(containers), source))
     end)
 end)
 
@@ -721,7 +721,7 @@ AddEventHandler('onResourceStart', function(resourceName)
             for _, playerId in pairs(GetPlayers()) do
                 TriggerClientEvent('v-containers:client:syncContainers', playerId, containers)
             end
-            print("[v-containers] Resource started, containers synced for all players.")
+            --print("[v-containers] Resource started, containers synced for all players.")
         end)
     end
 end)
